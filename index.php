@@ -85,6 +85,9 @@
 				document.getElementById("previewicon").className = "glyphicon glyphicon-eye-close";
 			}
 		}
+		function reload() {
+			location.reload();
+		}
 	</script>
 </head>
 
@@ -126,8 +129,7 @@ $color = $colors[rand(0, 10)];
 			<a href="#" style="margin-left: 6px; color: black">Folder 1</a>
 		</div> -->
 		<?php
-		$dir = '/home/joseph/Pictures';
-		//$dir = "http://192.168.0.100/pictures";
+		$dir = 'D:\\Pictures';
 		$files = array_diff(scandir($dir), array('..', '.'));
 		$first = true;
 		foreach($files as $file) {
@@ -139,12 +141,12 @@ $color = $colors[rand(0, 10)];
 				} else {
 					echo '<span class="glyphicon glyphicon-folder-close"></span>'."\n";
 				}
-				echo "<a href=\"#\" style=\"margin-left: 6px; color: black\">$file</a></div>"."\n";
+				echo "<a href=\"index.php?folder=$file\" style=\"margin-left: 6px; color: black\" onclick=\"reload()\">$file</a></div>"."\n";
 			}
 		}
 		?>
 	</div>
-	
+
 	<div id="main_carousel" class="carousel slide" data-ride="carousel" style="margin-top: 10px">
 		<!-- Indicators -->
 		<!-- <ol class="carousel-indicators">
@@ -157,36 +159,62 @@ $color = $colors[rand(0, 10)];
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner" role="listbox">
 			<?php
-			$subdir = $files[0];
+			function contain($arr, $e) {
+				foreach ($arr as $a) {
+					if ($a == $e) return true;
+				}
+				return false;
+			}
+			function is_valid_type($file) {
+				$file_info = pathinfo($file);
+				switch($file_info['extension'])
+				{
+					case "jpg":
+					case "JPG":
+						return true;
+					break;
+				}
+				return false;
+			}
+
+
+			$subdir = $files[2];
+			if (isset($_GET['folder'])) {
+				$subdir = $_GET['folder'];
+			}
 			$pictures = array_diff(scandir($dir.'/'.$subdir), array('..', '.'));
+			$picturesnum = count($pictures) - 2;
+			$limit = 64 < $picturesnum ? 64 : $picturesnum;
+			$randomlist = array();
+			for ($i = 0 ; $i < $picturesnum ; $i ++) {
+				$randomlist[$i] = $i;
+			}
+			for($i = 0 ; $i < $picturesnum ; $i ++) {
+				$index1 = rand(0, $picturesnum-1);
+				$index2 = rand(0, $picturesnum-1);
+				if ($index1 != $index2) {
+					$temp = $randomlist[$index1];
+					$randomlist[$index1] = $randomlist[$index2];
+					$randomlist[$index2] = $temp;
+				}
+			}
+			//print_r($randomlist);
+
 			$first = true;
-			$counter = 0;
-			foreach ($pictures as $picture) {
-				if ($counter == 0) {
+			for ($i = 0 ; $i < $limit ; $i ++) {
+				if ($i == 0) {
 					echo '<div class="item active">'."\n";
 				} else {
 					echo '<div class="item">'."\n";
 				}
-				echo "<img src=\"http://192.168.0.100/pictures/2013-12-1/RIMG0060.JPG\" alt=\"$counter\">"."\n";
-				echo '</div>'."\n";
-				$counter ++;
+				$pic = $pictures[$randomlist[$i+2]];
+				while (!is_valid_type($pic)) {
+					$i ++;
+					$pic = $pictures[$randomlist[$i+2]];
+				}
+				echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic\" alt=\"$i\"></div>"."\n";
 			}
 			?>
-			<div class="item">
-				<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0060.JPG" alt="1">
-			</div>
-
-			<div class="item">
-				<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0062.JPG" alt="2">
-			</div>
-
-			<div class="item">
-				<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0063.JPG" alt="3">
-			</div>
-
-			<div class="item">
-				<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0064.JPG" alt="4">
-			</div>
 		</div>
 
 		<!-- Left and right controls -->
@@ -210,33 +238,74 @@ $color = $colors[rand(0, 10)];
 
 	<div id="scroll_carousel" class="carousel slide" data-ride="carousel">
 		<div class="carousel-inner" role="listbox">
-			<div class="w3-col item active">
-				<div class="w3-col s3 m3 l3" style="padding-right: 6px;">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px;">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-			</div>
+			<?php
+			for($i = 0 ; $i < $limit ; $i += 4) {
+				if ($i == 0) {
+					$pic1 = $pictures[$randomlist[$i+2]];
+					$pic2 = $pictures[$randomlist[$i+3]];
+					$pic3 = $pictures[$randomlist[$i+4]];
+					$pic4 = $pictures[$randomlist[$i+5]];
+					echo '<div class="w3-col item active">';
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic1\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic2\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic3\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic4\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '</div>';
+				} else if ($i + 4 >= $limit){
+					echo '<div class="w3-col item">';
+					switch($limit - $i) {
+					case 4:
+						$pic4 = $pictures[$randomlist[$i+5]];
+						echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+						echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic4\" alt=\"$i\" style=\"width: 100%\"></div>";
+					case 3:
+						$pic3 = $pictures[$randomlist[$i+4]];
+						echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+						echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic3\" alt=\"$i\" style=\"width: 100%\"></div>";
+					case 2:
+						$pic2 = $pictures[$randomlist[$i+3]];
+						echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+						echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic2\" alt=\"$i\" style=\"width: 100%\"></div>";
+					case 1:
+						$pic1 = $pictures[$randomlist[$i+2]];
+						echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+						echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic1\" alt=\"$i\" style=\"width: 100%\"></div>";
+						break;
+					}
+					echo '</div>';
+				} else {
+					$pic1 = $pictures[$randomlist[$i+2]];
+					$pic2 = $pictures[$randomlist[$i+3]];
+					$pic3 = $pictures[$randomlist[$i+4]];
+					$pic4 = $pictures[$randomlist[$i+5]];
+					echo '<div class="w3-col item">';
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic1\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic2\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic3\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '<div class="w3-col s3 m3 l3" style="padding-right: 6px;">';
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic4\" alt=\"$i\" style=\"width: 100%\"></div>";
+					echo '</div>';
+				}
+			}
+
+			?>
 
 			<div class="w3-col item">
 				<div class="w3-col s3 m3 l3" style="padding-right: 6px;">
 					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
 				</div>
 				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
 				</div>
 				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
 				</div>
 				<div class="w3-col s3 m3 l3" style="padding-left: 6px;">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
 				</div>
 			</div>
 
@@ -266,6 +335,7 @@ $color = $colors[rand(0, 10)];
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
+
 
 	<div class="w3-container w3-padding <?php echo $color;?>" style="margin-top: 20px;">
 		<footer>
