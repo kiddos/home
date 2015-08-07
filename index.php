@@ -11,35 +11,6 @@
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<title>Home</title>
 	<style>
-		li a:link {
-			text-decoration: none;
-			color: black;
-		}
-		li a:visited {
-			text-decoration: none;
-			color: black;
-		}
-		li a:hover {
-			text-decoration: bold;
-			color: green;
-		}
-		li a:active {
-			text-decoration: none;
-			color: green;
-		}
-		li {
-			padding-top: 5px;
-			padding-bottom: 15px;
-		}
-		div.image {
-			display: block;
-			margin-top: 15px;
-			float: right;
-			width: 19%;
-			margin-left: 10px;
-			padding: 10px;
-			margin-bottom: 10px;
-		}
 		div.image img{
 			width: 100%;
 		}
@@ -107,6 +78,7 @@ $color = $colors[rand(0, 10)];
 		</div>
 	</div>
 
+	<!-- navigation bar -->
 	<nav class="w3-topnav w3-container w3-padding w3-row <?php echo $color; ?>"
 		style="display: none;">
 		<a class="w3-col s6 m4 l2" href="index.php"><i class="material-icons">home</i>  Home</a>
@@ -114,7 +86,7 @@ $color = $colors[rand(0, 10)];
 	</nav>
 
 	<div class="w3-row">
-		<div class="w3-card-4 <?php echo $color;?> w3-col s4 m3 l3 w3-padding" onclick="toggle_dir()"
+		<div class="w3-card-4 <?php echo $color;?> w3-col s6 m4 l3 w3-padding" onclick="toggle_dir()"
 			style="margin-top: 10px">
 			<span id="foldericon" class="glyphicon glyphicon-folder-close"></span>
 			<a href="#" style="margin-left: 10px; margin-right: 10px">Folders</a>
@@ -198,7 +170,6 @@ $color = $colors[rand(0, 10)];
 					$randomlist[$index2] = $temp;
 				}
 			}
-			//print_r($randomlist);
 
 			$first = true;
 			for ($i = 0 ; $i < $limit ; $i ++) {
@@ -296,33 +267,6 @@ $color = $colors[rand(0, 10)];
 			}
 
 			?>
-
-			<div class="w3-col item">
-				<div class="w3-col s3 m3 l3" style="padding-right: 6px;">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px;">
-				</div>
-			</div>
-
-			<div class="w3-col item">
-				<div class="w3-col s3 m3 l3" style="padding-right: 6px;">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px; padding-right: 6px">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-				<div class="w3-col s3 m3 l3" style="padding-left: 6px;">
-					<img src="http://192.168.0.100/pictures/2013-12-1/RIMG0059.JPG" alt="preview1" style="width: 100%">
-				</div>
-			</div>
 		</div>
 
 		<!-- Left and right controls -->
@@ -335,7 +279,6 @@ $color = $colors[rand(0, 10)];
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
-
 
 	<div class="w3-container w3-padding <?php echo $color;?>" style="margin-top: 20px;">
 		<footer>
