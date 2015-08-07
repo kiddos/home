@@ -70,7 +70,7 @@ $colors = array('red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue',
 $color = $colors[rand(0, 10)];
 ?>
 
-<div id="content" class="w3-container" style="width:88%;margin:auto">
+<div class="w3-container" style="width:88%;margin:auto">
 	<div class="w3-container <?php echo $color; ?>">
 		<div class="w3-row">
 			<i class="material-icons w3-opennav w3-right" onclick="toggle_nav()">menu</i>
