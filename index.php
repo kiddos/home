@@ -125,7 +125,14 @@ $color = $colors[rand(0, 10)];
 				$subdir = $_GET['folder'];
 			}
 			$pictures = array_diff(scandir($dir.'/'.$subdir), array('..', '.'));
-			$picturesnum = count($pictures) - 2;
+
+			// calculate the number of pictures
+			$picturesnum = 0;
+			foreach ($pictures as $p) {
+				if (!is_dir($dir.'/'.$subdir.'/'.$p) && is_valid_type($p)) {
+					$picturesnum ++;
+				}
+			}
 			$limit = 64 < $picturesnum ? 64 : $picturesnum;
 			$randomlist = array();
 			for ($i = 0 ; $i < $picturesnum ; $i ++) {
@@ -143,17 +150,19 @@ $color = $colors[rand(0, 10)];
 
 			$first = true;
 			for ($i = 0 ; $i < $limit ; $i ++) {
-				if ($i == 0) {
-					echo '<div class="item active">'."\n";
-				} else {
-					echo '<div class="item">'."\n";
+				if (array_key_exists ($i + 2, $pictures)) {
+					$pic = $pictures[$randomlist[$i + 2]];
+					while (!is_dir($dir.'/'.$subdir.'/'.$pic) && !is_valid_type($pic)) {
+						$i ++;
+						$pic = $pictures[$randomlist[$i+2]];
+					}
+					if ($i == 0) {
+						echo '<div class="item active">'."\n";
+					} else {
+						echo '<div class="item">'."\n";
+					}
+					echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic\" alt=\"$i\"></div>"."\n";
 				}
-				$pic = $pictures[$randomlist[$i+2]];
-				while (!is_valid_type($pic)) {
-					$i ++;
-					$pic = $pictures[$randomlist[$i+2]];
-				}
-				echo "<img src=\"http://192.168.0.100/pictures/$subdir/$pic\" alt=\"$i\"></div>"."\n";
 			}
 			?>
 		</div>
