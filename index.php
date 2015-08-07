@@ -27,39 +27,7 @@
 			color: #FFFFFF;
 		}
 	</style>
-	<script type="text/javascript" charset="utf-8">
-		function toggle_nav() {
-			if (document.getElementsByClassName("w3-topnav")[0].style.display == "none") {
-				document.getElementsByClassName("w3-topnav")[0].style.display = "block";
-			} else if (document.getElementsByClassName("w3-topnav")[0].style.display == "block") {
-				document.getElementsByClassName("w3-topnav")[0].style.display = "none";
-			}
-		}
-		function toggle_dir() {
-			if (document.getElementById("folders").style.display == "none") {
-				document.getElementById("folders").style.display = "block";
-				document.getElementById("foldericon").className = "glyphicon glyphicon-folder-open";
-			} else if (document.getElementById("folders").style.display == "block") {
-				document.getElementById("folders").style.display = "none";
-				document.getElementById("foldericon").className = "glyphicon glyphicon-folder-close";
-			}
-		}
-		function toggle_preview() {
-			if (document.getElementById("scroll_carousel").style.display == "none") {
-				document.getElementById("scroll_carousel").style.display = "";
-				document.getElementById("previewicon").className = "glyphicon glyphicon-eye-open";
-			} else if (document.getElementById("scroll_carousel").style.display == "") {
-				document.getElementById("scroll_carousel").style.display = "none";
-				document.getElementById("previewicon").className = "glyphicon glyphicon-eye-close";
-			} else {
-				document.getElementById("scroll_carousel").style.display = "none";
-				document.getElementById("previewicon").className = "glyphicon glyphicon-eye-close";
-			}
-		}
-		function reload() {
-			location.reload();
-		}
-	</script>
+	<script type="text/javascript" src="js/toggle.js"></script>
 </head>
 
 <body>
@@ -81,13 +49,15 @@ $color = $colors[rand(0, 10)];
 	<!-- navigation bar -->
 	<nav class="w3-topnav w3-container w3-padding w3-row <?php echo $color; ?>"
 		style="display: none;">
-		<a class="w3-col s6 m4 l2" href="index.php"><i class="material-icons">home</i>  Home</a>
-		<a class="w3-col s6 m4 l2" href="theater.php"><i class="material-icons">desktop_mac</i>  Theater</a>
+		<a class="w3-col s6 m4 l2" href="index.php">
+			<i class="material-icons">home</i>  Home</a>
+		<a class="w3-col s6 m4 l2" href="theater.php">
+			<i class="material-icons">desktop_mac</i>  Theater</a>
 	</nav>
 
 	<div class="w3-row">
-		<div class="w3-card-4 <?php echo $color;?> w3-col s6 m4 l3 w3-padding" onclick="toggle_dir()"
-			style="margin-top: 10px">
+		<div class="w3-card-4 <?php echo $color;?> w3-col s6 m4 l3 w3-padding"
+			onclick="toggle_dir()" style="margin-top: 10px">
 			<span id="foldericon" class="glyphicon glyphicon-folder-close"></span>
 			<a href="#" style="margin-left: 10px; margin-right: 10px">Folders</a>
 			<span class="caret"></span>
