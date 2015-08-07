@@ -9,6 +9,9 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<script type="text/javascript" src="js/playr.js"></script>
 	<title>Home Theater</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<style>
 	#video_container {
 		margin-top: 5px;
@@ -52,9 +55,9 @@ $color = $colors[rand(0, 10)];
 			break;
 		case "mkv":
 			$type = "video/mp4";
-			echo '<div class="w3-container w3-card-4">';
-			echo '<p><i class="material-icons">warning</i>MKV is not a MIME type! The Video may or may not be play properly</p>';
-			echo '</div>';
+			echo '<div class="alert alert-danger fade in" style="margin-top: 10px">';
+			echo '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+			echo '<i class="material-icons" style="maring-right: 10px">warning</i>  <strong>MKV is not a MIME type!</strong>  The Video may or may not be play properly</div>';
 			break;
 	}
 	?>
